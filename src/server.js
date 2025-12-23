@@ -1,12 +1,7 @@
-import express from "express";
+import { app } from "./app.js";
 
-const app = express();
 const port = 3000
 
-// our very first API endpoint!
-// app.get('/', (req, res) => {
-//   res.send("Hello Client!, I am your Server !")
-// });
 
 app.get('/', (req, res) => {
   res.send(`<!doctype html>
@@ -27,7 +22,7 @@ app.get('/', (req, res) => {
             This page is styled with <span class="font-semibold">Tailwind CSS</span> via CDN.
           </p>
           <div class="mt-6 flex flex-wrap items-center gap-3">
-            <a href="/members" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <a href="/users" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
               GET /users
             </a>
             <span class="text-xs text-gray-500">Try POST/PUT/DELETE with your API client.</span>
@@ -39,6 +34,29 @@ app.get('/', (req, res) => {
       </main>
     </body>
   </html>`)
+});
+
+let users = [{id:"1", name: "Alice",email: "alice@example.com"}];
+//จำเป็นต้องรับ req, res ทุกครั้งถงึแม้จะใช้หรือไม่ก็ตาม
+app.get("/users", (req, res) => {
+    res.status(200).json(users);
+    // console.log(res);
+});
+
+app.post("/users", (req, res) => {
+  const {name, email} = req.body
+
+  
+    const newUser ={
+    id: String(users.length + 1),
+    name: name,
+    email: email
+  };
+
+  users.push(newUser);
+
+  res.status(201).json(newUser);
+
 });
 
 app.listen(port,() => {
