@@ -59,6 +59,23 @@ app.post("/users", (req, res) => {
 
 });
 
+// The function inside is called Route Handler / Controller
+app.delete("/users/:id", (req, res) => {
+  const userId = req.params.id;
+  
+  //มันจะเข้าไปดู object index ในตัวแปร users ว่า id ในนั้นตรงกับที่ user send request มาไหม
+  const userIndex = users.findIndex((user) => user.id ===  userId);
+
+  if(userIndex !== -1){
+    users.splice(userIndex, 1);
+
+    res.status(200).send(`User with ID ${userId} deleted ✅`);
+  } else {
+    res.status(404).send("User not found.");
+  }
+
+});
+
 app.listen(port,() => {
     console.log(`Server running on port: ${port} ✅`);
 });
