@@ -1,4 +1,5 @@
 import { users } from "../../mock-db/users.js"
+import { User } from "./users.model.js";
 
 export const testAPI = (req, res) => {
   res.send(`<!doctype html>
@@ -33,10 +34,30 @@ export const testAPI = (req, res) => {
   </html>`)
 };
 
-export const getUser = (req, res) => {
+//🔴 route handler:get all users(mock)
+export const getUser2 = (req, res) => {
     res.status(200).json(users);
     // console.log(res);
 };
+
+//🟢 route handler:get all users from the database
+export const getUsers = async (req, res) => {
+  try {
+    //การใส่เครื่องหมายลบ (-) หน้าชื่อฟิลด์ในคำสั่ง .select() ของ Mongoose เป็นสัญลักษณ์ที่ใช้บอกว่า "ไม่เอา" (Exclude) หรือให้ "ตัดฟิลด์นี้ออก
+    const users = await User.find().select("-password")
+
+    return res.status(200).json({
+      success: true,
+      data: users
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success : false,
+      error: "Failed to get users..."
+    });
+  }
+ }
+
 
 export const deleteUser = (req, res) => {
   const userId = req.params.id;
@@ -52,9 +73,10 @@ export const deleteUser = (req, res) => {
     res.status(404).send("User not found.");
   }
 
-}
+};
 
-export const createUser = (req, res) => {
+//🔴 route handler:create a new user(mock)
+export const createUser2 = (req, res) => {
   const {name, email} = req.body
 
   
@@ -68,4 +90,41 @@ export const createUser = (req, res) => {
 
   res.status(201).json(newUser);
 
-}
+};
+
+//🟢 route handler: create a new user in the database
+export const createUser = async (req,res) => { 
+  const {username, email, password}= req.body
+
+  if(!username || !email || !password){
+    return res.status(400).json({
+      success: false,
+      error: "username, email and password are required",
+    });
+  }
+
+  try {
+    const doc = await User.create({username, email, password})
+    //ใช้ .toObject เพราะอยากให้ข้อมูลที่ถูกกลับไปเปน plaib object JS ไม่ต้องมีของแถมอื่นๆใน mongoose ติดมาด้วย อีกอย่างบางที มักจะมาคู่กับการตั้งค่า เพื่อจัดการกับข้อมูลก่อนส่งออกไป เช่นลบ pw ออกก่อนส่งข้อมูลกลับ
+    const safe = doc.toObject()
+    delete safe.password
+
+    return res.status(201).json({
+      success: true,
+      data: safe,
+    });
+
+  } catch (error) {
+    if(error.code === 11000){
+      return res.status(409).json({
+        success: false,
+        error: "Email already in use!",
+      });
+    }
+    
+    return res.status(500).json({
+      success: false,
+      error: "Failed to create user..."
+    });
+  }
+ };
