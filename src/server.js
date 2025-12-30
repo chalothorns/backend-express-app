@@ -1,7 +1,7 @@
 import { app } from "./app.js";
 import { connectDB } from "./config/mongodb.js";
-const port = 3000
 
+const port = process.env.PORT || 3000;
 
 try {
     
