@@ -19,6 +19,7 @@ app.use(cors(corsOptions))
 //use Middleware called .json
 app.use(express.json());
 
+//มีเพื่อเช็คว่า route ใช้งานได้ไหม
 app.get("/", (req, res) => {
     res.send("Hello World");
 })
