@@ -3,10 +3,13 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import { router as apiRoutes} from "./routes/index.js"
+import { limiter } from "./middlewares/rateLimiter.js";
 
 
 
 export const app = express();
+
+app.set("trust proxy", 1)
 
 // Global middleware
 app.use(helmet());
@@ -22,6 +25,7 @@ const corsOptions = {
 credentials: true //✅ allow cookies to be sent
 };
 
+app.use(limiter);
 
 app.use(cors(corsOptions));
 
