@@ -6,10 +6,28 @@ POST http://localhost:3000/api/v2/users
 Content-Type: application/json
 
 {
-    "username": "Charlie",
-    "email": "charlie@example.com",
-    "password": "pass456"
+    "username": "Charles",
+    "email": "charles@example.com",
+    "password": "password456",
+    "role": "admin"
 }
 
 ### DELETE request to delete a user
 DELETE http://localhost:3000/api/v1/users/4
+
+### Login a user
+POST http://localhost:3000/api/v2/users/auth/cookie/login
+Content-Type: application/json
+
+{
+    "email": "charles@example.com",
+    "password" : "password456"
+}
+
+### POST Logout a user
+POST http://localhost:3000/api/v2/users/auth/cookie/logout
+
+### GET check user authentication
+GET http://localhost:3000/api/v2/users/auth/cookie/me
+
+

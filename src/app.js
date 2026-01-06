@@ -1,8 +1,15 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import { router as apiRoutes} from "./routes/index.js"
 
+
+
 export const app = express();
+
+// Global middleware
+app.use(helmet());
 
 const corsOptions = {
     origin: [
@@ -12,12 +19,17 @@ const corsOptions = {
         "https://react-frontend-connect-db.vercel.app",
 
     ],
-}
+credentials: true //✅ allow cookies to be sent
+};
 
-app.use(cors(corsOptions))
+
+app.use(cors(corsOptions));
 
 //use Middleware called .json
 app.use(express.json());
+
+//Middleware to parse cookies (required for cookie-base auth)
+app.use(cookieParser());
 
 //มีเพื่อเช็คว่า route ใช้งานได้ไหม
 app.get("/", (req, res) => {

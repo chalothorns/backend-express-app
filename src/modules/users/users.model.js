@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 // a data model is create from a data schema
 
@@ -13,6 +14,11 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", async function(){
+  if(!this.isModified("password")) return
+  this.password  = await bcrypt.hash(this.password, 10)
+});
 
 //mongodb will automatically create users collection
 //ตัวแปรที่เป็น class ใช้ pascal case
