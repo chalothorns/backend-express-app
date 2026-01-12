@@ -218,7 +218,6 @@ export const askUsers2 = async(req, res, next) => {
         username: 1,
         email: 1,
         role: 1,
-        createdAt: 1,
         score: {$meta: "vectorSearchScore"},
       },
     },
@@ -229,11 +228,10 @@ export const askUsers2 = async(req, res, next) => {
     const username = s?.username ? String(s.username) : "";
     const email = s?.email ? String(s.email) : "";
     const role = s?.role ? String(s.role) : "";
-    const createdAt = s?.createdAt ? String(s.createdAt) : "";
     //ถ้า score 1.5555555 ก็ตัดเหลือ 4 digits 1.555 
     const score = typeof s?.score === "number" ? s.score.toFixed(4) : "";
 
-    return `Source ${idx + 1}: {id: ${id}, username: ${username}, email: ${email}, role: ${role}, created_at: ${createdAt}, score: ${score}}`
+    return `Source ${idx + 1}: {id: ${id}, username: ${username}, email: ${email}, role: ${role}, score: ${score}}`
   })
 
   //Source 1 {id: 123, username:eva, email:eva@exemple.com}

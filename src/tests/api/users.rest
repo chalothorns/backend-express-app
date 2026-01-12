@@ -6,8 +6,8 @@ POST http://localhost:3000/api/v2/users
 Content-Type: application/json
 
 {
-    "username": "happyday",
-    "email": "happyday@example.com",
+    "username": "ai10",
+    "email": "ai10@example.com",
     "password": "happyday1234",
     "role": "user"
 }
@@ -20,8 +20,8 @@ POST http://localhost:3000/api/v2/users/auth/cookie/login
 Content-Type: application/json
 
 {
-    "email": "ai1@example.com",
-    "password" : "password1234"
+    "email": "ai10@example.com",
+    "password" : "happyday1234"
 }
 
 ### POST Logout a user

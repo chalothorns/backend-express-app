@@ -14,7 +14,6 @@ const buildUserEmbeddingText = (userDoc) => {
     `Username: ${username}`,
     `Email: ${email}`,
     `Role: ${role}`,
-    `CreatedAt: ${createdAt}`,
   ].join("\n");
 };
 //throw error มันจะไปเข้า catch และส่งให้ middleware error
